@@ -6,9 +6,16 @@
 #Student Name:  Alex Barr
 
 def TypePhrase():
+    """
+    Simplest Function in this program, just returns the phrase typed by the user. I haven't set any limitations on this function.
+    """
     return input("Type a phrase (or quit to exit program): ")
 
 def LetterRedaction(_redactedLetters):
+    """
+    This is the primary function of the program. It takes whatever has been put in the TypePhrase function and checks it to see what letters to redact.
+    The requirements are very strict for this function and it will not allow you to use it in the way it is not intended.
+    """
     _letters = input("Type a comma-seperated list of letter to redact: ")
 
     #Check for spaces at end to remove before the main portion of this function (trying to emulate a C#-like for loop)
@@ -34,23 +41,27 @@ def LetterRedaction(_redactedLetters):
     for i in range(len(_letters)): # Go through the string as a list
         if i % 2 == 1: # Check every second vslue in the string -- if it is NOT a comma, end the loop and try again
             if _letters[i] != ",": # if its not a comma tell the user to start over
-                print("Invalid Input. Please try again")
+                print("Invalid Input. Please try again") # I realize I could set this up so that it counts commas when they aren't the even character in the string, but I want to enforce this
                 LetterRedaction(_redactedLetters)
                 break
             else: #If it IS a comma
                 continue
         else:
-            if _letters[i].isalpha():
+            if _letters[i].isalpha(): #This section can be done with replacing any symbol that the user places, but it complicates things sometimes such as when the user places a "_" that is supposed to be replaced by a "_", so for simplicities sake I'm limiting the redacted characters to be letters only
                 if _redactedLetters.count(_letters[i]) == 0:
                     _redactedLetters.append(_letters[i].lower())
                 else:
-                    print("WARNING: Duplicate letters have not been added.")
+                    print("WARNING: Duplicate letters/symbols have not been added.")
             else:
-                print("Invalid Input. Please try again")
+                print("Invalid Input (letters only). Please try again")
                 LetterRedaction(_redactedLetters)
                 break
 
 def NumberOfRedactedLetters(_phrase, _redactedLetters):
+    """
+    This uses a double for each loop to count the number of redacted letters in the phrase.
+    """
+
     n = 0
     for letter in _phrase:
         for _redacted in _redactedLetters:
@@ -60,6 +71,19 @@ def NumberOfRedactedLetters(_phrase, _redactedLetters):
     return n
 
 def PrintRedactedPhrase(_phrase, _redactedLetters, _replacementSymbol):
+    """
+    This is where I went overboard and created my own version of the .Replace function.
+    It was pretty easy, just get the phrase, the redacted letters the symbol the programmer
+    would like to replace the redacted letters with.
+
+    It uses a double for each loop going through the phrase string letter by letter and for each letter
+    it goes through all the letters to redact. If the current letter is the same as the letter to redact then the current letter
+    is replaced with the replacement symbol. At the end of each second for each loop the letter is appeneded to the redacted phrase
+    whether it is an original letter or a replacement symbol.
+
+    Then finally, I use a for each loop to concatenate each letter/symbol in _redactedPhrase to a new string called _finalPhrase and this is
+    printed to the screen.
+    """
     _redactedPhrase = []
     _finalPhrase = ""
 
@@ -78,7 +102,6 @@ def PrintRedactedPhrase(_phrase, _redactedLetters, _replacementSymbol):
 def main():
     # YOUR CODE STARTS HERE, each line must be indented (one tab)
 
-    #condition = ""
     endPhrase = "quit"
     redactedLetters = [] #Clear the list so it doesn't cause errors on the next try
 
@@ -86,9 +109,9 @@ def main():
         redactedLetters = []
         #Input Message
         phrase = TypePhrase()
+        #Exit the loop if the entered phrase is the same as the end phrase
         if phrase == endPhrase:
             break
-        # condition = phrase
         print("")
         #Get Letters to Remove
         LetterRedaction(redactedLetters)
