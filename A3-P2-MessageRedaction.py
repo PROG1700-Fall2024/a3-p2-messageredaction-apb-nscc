@@ -16,8 +16,9 @@ def LetterRedaction(_redactedLetters):
     This is the primary function of the program. It takes whatever has been put in the TypePhrase function and checks it to see what letters to redact.
     The requirements are very strict for this function and it will not allow you to use it in the way it is not intended.
     """
-    _letters = input("Type a comma-seperated list of letter to redact: ")
+    _letters = input("Type a comma-seperated list of letters to redact: ")
     _warningShown = 0
+
     #Check for spaces at end to remove before the main portion of this function (trying to emulate a C#-like for loop)
     #I'm doing this because normally a special value will give an invalid input, but a space may be a normal reaction to put
     #at the end of an input so I don't want to punish the user for that.
@@ -40,7 +41,7 @@ def LetterRedaction(_redactedLetters):
 
     for i in range(len(_letters)): # Go through the string as a list
         if i % 2 == 1: # Check every second vslue in the string -- if it is NOT a comma, end the loop and try again
-            if _letters[i] != ",": # if its not a comma tell the user to start over
+            if _letters[i] != ",": # if its not a comma tell the user to start over #### <-------- THIS CODE HERE WILL NEVER EXECUTE THE WAY I INTENDED BECAUSE IN THE OCCASSIONS THAT IT IS MISTAKENLY A "," the i % 2 WON'T == 1
                 print("Invalid Input. Please try again") # I realize I could set this up so that it counts commas when they aren't the even character in the string, but I want to enforce this
                 LetterRedaction(_redactedLetters)
                 break
@@ -56,6 +57,7 @@ def LetterRedaction(_redactedLetters):
                         _warningShown += 1
             else:
                 print("Invalid Input (letters only). Please try again")
+                _redactedLetters.clear() #BUG FIX <-- so that false-duplicated aren't recorded
                 LetterRedaction(_redactedLetters)
                 break
 
@@ -108,7 +110,7 @@ def main():
     redactedLetters = [] #Clear the list so it doesn't cause errors on the next try
 
     while True:
-        redactedLetters = []
+        redactedLetters.clear() #= []
         #Input Message
         phrase = TypePhrase()
         #Exit the loop if the entered phrase is the same as the end phrase
