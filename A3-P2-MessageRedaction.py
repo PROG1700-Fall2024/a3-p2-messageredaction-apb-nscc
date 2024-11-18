@@ -17,7 +17,7 @@ def LetterRedaction(_redactedLetters):
     The requirements are very strict for this function and it will not allow you to use it in the way it is not intended.
     """
     _letters = input("Type a comma-seperated list of letter to redact: ")
-
+    _warningShown = 0
     #Check for spaces at end to remove before the main portion of this function (trying to emulate a C#-like for loop)
     #I'm doing this because normally a special value will give an invalid input, but a space may be a normal reaction to put
     #at the end of an input so I don't want to punish the user for that.
@@ -28,7 +28,7 @@ def LetterRedaction(_redactedLetters):
 
     _placeInString = len(_tempString) - 1
     while _placeInString > -1:
-        if _tempString[_placeInString] == " ":
+        if _tempString[_placeInString] == " ": #Get rid of spaces at the end of the string
             del _tempString[_placeInString]
             _placeInString -= 1
         else:
@@ -51,7 +51,9 @@ def LetterRedaction(_redactedLetters):
                 if _redactedLetters.count(_letters[i]) == 0:
                     _redactedLetters.append(_letters[i].lower())
                 else:
-                    print("WARNING: Duplicate letters/symbols have not been added.")
+                    if _warningShown == 0: #Only show the warning once
+                        print("WARNING: Duplicate letters/symbols have not been added.")
+                        _warningShown += 1
             else:
                 print("Invalid Input (letters only). Please try again")
                 LetterRedaction(_redactedLetters)
